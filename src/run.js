@@ -1,36 +1,19 @@
 const utils = require('rsx-common');
-const path = require('path');
-const android = require('./android');
-const ios = require('./ios');
 const log = utils.log;
 
-const appRoot = process.env['RN_PROJECT_ROOT'];
-
-const platforms = [
-  'ios',
-  'android',
-];
+const platforms = {
+    'ios': require('./ios/run'),
+    'android': require('./android/run'),
+};
 
 module.exports = function run(args, callback) {
-  log.heading = 'rsx-run';
-  const platform = args[0];
+    log.heading = 'rsx-run';
+    const platform = args[0];
 
-  if (platforms.indexOf(platform) !== -1) {
-
-    switch(platform) {
-      case 'android':
-        android();
-        break;
-      case 'ios':
-      default:
-        ios();
-        break;
+    if (Object.keys(platforms).indexOf(platform) === -1) {
+        log.error(`${platform} is not a valid platform for this command`);
+        return;
     }
 
-    return;
-
-  }
-
-  log.error(action + ' is not a valid platform for this command');
-
+    platforms[platform](platform, callback);
 };
