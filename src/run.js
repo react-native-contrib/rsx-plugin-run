@@ -1,3 +1,5 @@
+'use strict';
+
 const utils = require('rsx-common');
 const log = utils.log;
 
@@ -11,9 +13,15 @@ module.exports = function run(args, callback) {
     const platform = args[0];
 
     if (Object.keys(platforms).indexOf(platform) === -1) {
-        log.error(`${platform} is not a valid platform for this command`);
+
+        try {
+            throw Error(`${platform} is not a valid platform for this command`);
+        } catch(e) {
+            log.error(e.message);
+        }
+
         return;
     }
 
-    platforms[platform](platform, callback);
+    platforms[platform](callback);
 };
