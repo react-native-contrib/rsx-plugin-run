@@ -12,6 +12,7 @@ let platforms = {
 module.exports = function run(args, callback) {
     log.heading = 'rsx-run';
     let platform = args[0];
+    let onEnd = callback || (() => {});
 
     if (Object.keys(platforms).indexOf(platform) === -1) {
 
@@ -24,5 +25,5 @@ module.exports = function run(args, callback) {
         return;
     }
 
-    platforms[platform](callback);
+    platforms[platform](onEnd);
 };
