@@ -11,7 +11,7 @@ let platforms = {
 
 module.exports = function run(args, callback) {
     log.heading = 'rsx-run';
-    const platform = args[0];
+    let platform = args[0];
 
     if (Object.keys(platforms).indexOf(platform) === -1) {
 
