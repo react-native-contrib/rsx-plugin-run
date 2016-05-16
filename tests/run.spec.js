@@ -15,16 +15,13 @@ log.level = 'silent';
 
 describe('run', () => {
 
-    it('should do something');
-
-
     describe('main', () => {
 
         it('should throw an error if an invalid platform is specified', () => {
             let spy = sinon.spy();
             let command = require('../src/run');
             command(['pppppp'], spy);
-            expect(spy.calledWith('pppppp is not a valid platform for this command'));
+            expect(spy.called).to.be.false;
         });
 
         it('should execute the subcommand if a valid platform is specified', () => {
@@ -36,7 +33,7 @@ describe('run', () => {
             let spy = sinon.spy();
             commandMock(['ios'], spy);
 
-            expect(spy.calledOnce).to.deep.equals(true);
+            expect(spy.calledOnce).to.be.true;
         });
 
     });
@@ -53,7 +50,7 @@ describe('run', () => {
             let spy = sinon.spy();
             commandMock(spy);
 
-            expect(spy.calledOnce).to.deep.equals(true);
+            expect(spy.calledOnce).to.be.true;
         });
 
     });
@@ -70,7 +67,7 @@ describe('run', () => {
             let spy = sinon.spy();
             commandMock(spy);
 
-            expect(spy.calledOnce).to.deep.equals(true);
+            expect(spy.calledOnce).to.be.true;
         });
 
     });
