@@ -1,15 +1,15 @@
 'use strict';
 
-const utils = require('rsx-common');
-const chai = require('chai');
-const rewire = require('rewire');
-const sinon = require('sinon');
-const path = require('path');
+let utils = require('rsx-common');
+let chai = require('chai');
+let rewire = require('rewire');
+let sinon = require('sinon');
+let path = require('path');
 
-const expect = chai.expect;
-const log = utils.log;
+let expect = chai.expect;
+let log = utils.log;
 
-const command = require('../src/run');
+let command = require('../src/run');
 
 log.level = 'silent';
 
@@ -21,16 +21,20 @@ describe('run', () => {
     describe('main', () => {
 
         it('should throw an error if an invalid platform is specified', () => {
-            const spy = sinon.spy();
-            const command = require('../src/run');
+            let spy = sinon.spy();
+            let command = require('../src/run');
             command(['pppppp'], spy);
             expect(spy.calledWith('pppppp is not a valid platform for this command'));
         });
 
         it('should execute the subcommand if a valid platform is specified', () => {
-            const spy = sinon.spy();
-            const command = require('../src/run');
-            command(['ios'], spy);
+            let commandMock = rewire('../src/run');
+            commandMock.__set__('platforms', {
+                ios: (callback) => { callback(); },
+                android: (callback) => { callback(); },
+            });
+            let spy = sinon.spy();
+            commandMock(['ios'], spy);
 
             expect(spy.calledOnce).to.deep.equals(true);
         });
@@ -39,13 +43,35 @@ describe('run', () => {
 
     describe('ios', () => {
 
-        it('should run on iOS');
+        it('should run on iOS', () => {
+            let commandMock = rewire('../src/ios/run');
+            commandMock.__set__('utils', {
+                process: {
+                    run: function run(command) { return (callback) => callback(command); },
+                },
+            });
+            let spy = sinon.spy();
+            commandMock(spy);
+
+            expect(spy.calledOnce).to.deep.equals(true);
+        });
 
     });
 
     describe('android', () => {
 
-        it('should run on Android');
+        it('should run on Android', () => {
+            let commandMock = rewire('../src/android/run');
+            commandMock.__set__('utils', {
+                process: {
+                    run: function run(command) { return (callback) => callback(command); },
+                },
+            });
+            let spy = sinon.spy();
+            commandMock(spy);
+
+            expect(spy.calledOnce).to.deep.equals(true);
+        });
 
     });
 

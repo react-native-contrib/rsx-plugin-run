@@ -1,9 +1,10 @@
 'use strict';
 
-const utils = require('rsx-common');
-const log = utils.log;
+let utils = require('rsx-common');
 
-const platforms = {
+let log = utils.log;
+
+let platforms = {
     'ios': require('./ios/run'),
     'android': require('./android/run'),
 };
